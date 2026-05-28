@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "WardrobeItem": {
+      "title": "Wardrobe Item",
+      "description": "A single piece of clothing in the wardrobe",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string" },
+        "subCategory": { "type": "string" },
+        "useCases": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "brand": { "type": "string" },
+        "color": { "type": "string" },
+        "pattern": { 
+          "type": "string",
+          "enum": ["Solid", "Stripes", "Florals", "Plaids", "Herringbone", "Polka Dots", "Checked", "Sparkles"]
+        },
+        "quantity": { "type": "number" },
+        "tags": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "number" },
+        "userId": { "type": "string" }
+      },
+      "required": ["id", "category", "subCategory", "useCases", "color", "pattern", "quantity", "createdAt", "userId"]
+    },
+    "UserPreferences": {
+      "title": "User Preferences",
+      "description": "User specific settings and custom data",
+      "type": "object",
+      "properties": {
+        "customPalette": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}/items/{itemId}": {
+      "schema": "WardrobeItem",
+      "description": "Collection of wardrobe items for a specific user"
+    },
+    "/users/{userId}/preferences/main": {
+      "schema": "UserPreferences",
+      "description": "Main preferences document for a user"
+    }
+  }
+}

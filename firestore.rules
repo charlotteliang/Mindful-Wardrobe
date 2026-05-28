@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: /users/{userId}/items/{itemId}
+    // Document ID: itemId (UUID)
+    // Fields:
+    //   - id: string (required)
+    //   - category: string (required)
+    //   - subCategory: string (required)
+    //   - useCases: array of strings (required)
+    //   - brand: string (optional)
+    //   - color: string (required)
+    //   - quantity: number (required)
+    //   - createdAt: number (required)
+    //   - userId: string (required)
+    //
+    // Collection: /users/{userId}/preferences/main
+    // Document ID: "main"
+    // Fields:
+    //   - customPalette: array of strings (optional)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidItem(data) {
+      let allowedPatterns = ['Solid', 'Stripes', 'Florals', 'Plaids', 'Herringbone', 'Polka Dots', 'Checked', 'Sparkles'];
+      return data.keys().hasAll(['id', 'category', 'subCategory', 'useCases', 'color', 'pattern', 'quantity', 'createdAt', 'userId']) &&
+             data.id is string &&
+             data.category is string &&
+             data.subCategory is string &&
+             data.useCases is list &&
+             data.color is string &&
+             data.pattern is string &&
+             data.pattern in allowedPatterns &&
+             data.quantity is number &&
+             data.createdAt is number &&
+             data.userId == request.auth.uid &&
+             (!('brand' in data) || data.brand is string) &&
+             (!('tags' in data) || data.tags is list);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      match /items/{itemId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidItem(request.resource.data);
+        allow update: if isOwner(userId) && isValidItem(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+      
+      match /preferences/main {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId);
+      }
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
