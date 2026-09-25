@@ -1,20 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Mindful Wardrobe
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://aistudio-preprod.corp.google.com/apps/efb7dfe4-3f2f-4e57-a8d0-44638435bf19
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Mindful Wardrobe is a personal wardrobe organization app. It helps you catalog your clothes by category, brand, color, and pattern, tag items by use case (Work, Fun, Active, Lounge Wear), and see your wardrobe at a glance through summaries and analytics — all synced to the cloud so it's available wherever you sign in.

@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "authorizedDomains": ["localhost", "mindful-wardrobe.web.app", "mindful-wardrobe.firebaseapp.com"],
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Mindful Wardrobe",
+        "supportEmail": "charlotteliangsf@gmail.com"
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json",
+    "edition": "enterprise",
+    "database": "wardrobe-db",
+    "location": "nam5"
+  },
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
